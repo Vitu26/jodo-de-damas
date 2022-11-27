@@ -1,74 +1,191 @@
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <conio.h>
+#include<locale.h>
 
 #define WIDTH 640
 #define HEIGHT 480
 
 
-char matriz[10][10] = {
-                    {' ', '1', '2', '3', '4', '5', '6', '7', '8', ' '},
-                    {'1', 'P', ' ', 'P', ' ', 'P', ' ', 'P', ' ', ' '},
-                    {'2', ' ', 'P', ' ', 'P', ' ', 'P', ' ', 'P', ' '},
-                    {'3', 'P', ' ', 'P', ' ', 'P', ' ', 'P', ' ', ' '},
-                    {'4', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
-                    {'5', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
-                    {'6', ' ', 'B', ' ', 'B', ' ', 'B', ' ', 'B', ' '},
-                    {'7', 'B', ' ', 'B', ' ', 'B', ' ', 'B', ' ', ' '},
-                    {'8', ' ', 'B', ' ', 'B', ' ', 'B', ' ', 'B', ' '},
-                    {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}
+
+char xadrez[9][9] = {
+	{' ', '1', '2', '3', '4', '5', '6', '7', '8', ' '},
+	{'1', 'T', 'C', 'B', ' K', 'Q', 'B', 'C', 'T', ' '},
+	{'2', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', ' '},
+	{'3', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+	{'4', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+	{'5', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+	{'6', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+	{'7', 'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p', ' '},
+	{'8', 't', 'c', 'b', 'q', 'k', 'b', 'c', 't', ' '},
+	{' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}
 
 
 };
 
-int x, y;
-int linOri, colOri, linDes, colDes;
-int player;
-int vencer = 0;
-
-/*int moverPeca( int linOri, int colOri, int linDes, int colDes) {
-    int mover = 0;
-    char peca;
-    int dV = abs(linDes - linOri);
-    int dH = abs (colDes - colOri);
-    if((linOri >= 0 && linOri <= 8 && colOri >= 0 && colOri <= 8 ) &&
-       (linDes >= 0 && linDes <= 8 && colDes >= 0 && colDes <= 8 )){
-       peca = matriz[linOri][colOri];
-
-
-        if((peca == 'P' || peca == 'B') &&
-           ((dV >= 0 && dV <=1) && (dH >=0 && dH <=1))){
-            mover = 1;
-       }
+int pintarTelaTexto();
+int moverPeca();
+int menu();
 
 
 
 
-        if(mover){
-        matriz[linDes][colDes] = matriz[linOri][colOri];
-        matriz[linOri][colOri] = ' ';
-        return 1;//movimento realizado
-        }else{
-        return 9;//pe�a n�o pode ser movida deste jeito
+int main(){
+    int x = 0;
+    char ch;
+    int aux, sair;
+
+    int linOri, linDes, colOri, colDes;
+    printf( "\n\tJOGO DE XADREZ" ) ;
+    printf ( "\n\tAPERTE ENTER PARA CONTINUAR!");
+
+
+    getch();
+    system( "cls" ) ;
+
+    printf( "\n\tPEÇAS MAIUSCULAS COMEÇAM" ) ;
+    printf ( "\n\tAPERTE ENTER PARA CONTINUAR!");
+
+    getch();
+    system( "cls" ) ;
+
+    /*while(1)  {
+      x++;
+      system( "cls" ) ;
+      pintarTelaTexto();
+      if((x%2) == 0 ){
+        printf("Jogador 2 \n");
+        printf("Informe a linha e coluna de origem: ");
+        scanf("%d %d",&linOri, &colOri );
+        printf("\nInforme a linha e coluna de destino: ");
+        scanf("%d %d",&linDes, &colDes );
+
+      }else {
+
+        printf("Jogador 1 \n");
+        printf("Informe a linha e coluna de origem: ");
+        scanf("%d %d",&linOri, &colOri );
+        printf("\nInforme a linha e coluna de destino: ");
+        scanf("%d %d",&linDes, &colDes );
+
+
+
+      }
+      int resultado = moverPeca(linOri, colOri, linDes, colDes);
+      if( resultado != 1){
+        switch( resultado ) {
+            case 9:
+                printf("\n ERRO: Pe?a n?o pode ser movida deste jeito!");
+                getch();
+                break;
+            case 0:
+                printf("\nERRO : Coordenadas inv?lidas!");
+                getch();
+                break;
+            case 1:
+                break;
         }
-    }else{
-        return 0;
-    }
+      }
+    }*/
+      do {
+    aux = menu();
+    if (aux == 1) {                //peças brancas
+        pintarTelaTexto();
+        printf("Jogador 1 \n");
+        printf("Informe a linha e coluna de origem: ");
+        scanf("%d %d",&linOri, &colOri );
+        printf("\nInforme a linha e coluna de destino: ");
+        scanf("%d %d",&linDes, &colDes );
+        system("cls");
+        int resultado = moverPeca(linOri, colOri, linDes, colDes);
+        if( resultado != 1){
+        switch( resultado ) {
+            case 9:
+                printf("\n ERRO: Pe?a n?o pode ser movida deste jeito!");
+                getch();
+                break;
+            case 0:
+                printf("\nERRO : Coordenadas inv?lidas!");
+                getch();
+                break;
+            case 1:
+                break;
+        }
+      }
 
+    } else
+        if (aux == 2) {                         //peças pretas
+           pintarTelaTexto();
+           printf("Jogador 2 \n");
+           printf("Informe a linha e coluna de origem: ");
+           scanf("%d %d",&linOri, &colOri );
+           printf("\nInforme a linha e coluna de destino: ");
+           scanf("%d %d",&linDes, &colDes );
+           system("cls");
+           int resultado = moverPeca(linOri, colOri, linDes, colDes);
+           if( resultado != 1){
+           switch( resultado ) {
+            case 9:
+                printf("\n ERRO: Pe?a n?o pode ser movida deste jeito!");
+                getch();
+                break;
+            case 0:
+                printf("\nERRO : Coordenadas inv?lidas!");
+                getch();
+                break;
+            case 1:
+                break;
+        }
+      }
+
+
+        } else
+            if (aux == 3) {                  //acabar o jogo
+              printf("\t ===================================\n");
+              printf("\t |    OBRIGADO POR JOGAR !!!! =)   |\n");
+              printf("\t ===================================");
+              printf("\n\n\n");
+              sair = 1;
+            }
+
+  }while(sair == 0);
+
+
+
+  printf("\n\n\n\n");
+  return 0;
+}
+
+/*    getch();
+    return 0;
 }*/
 
+int menu(){
+      int opc;                    //OPÇÃO DO MENU
+    printf("\n\n");
+	printf ("============ MENU =========");
+	printf ("\n\t1 - MOVER AS PEÇAS BRANCAS"); //JOGADOR 1
+	printf ("\n\t2 - MOVER AS PEÇAS PRETAS");   // JOGADOR 2
+	printf ("\n\t3 - ACABAR O JOGO");
+	printf ("\n\n");
 
+	scanf("%d", &opc);
+
+  system("cls");
+
+	return opc;
+}
 
 
 
 
 int pintarTelaTexto(){
     system("CLS");
-    int lin = 0, col = 1, r;
+    int lin, col, r;
     for(lin = 0; lin < 9; lin++){
         for(r = 0; r < 3; r++){
             for(col = 0; col < 9; col++){
-                char peca = matriz[lin][col];
+                char peca = xadrez[lin][col];
                 char letra = ((lin + col) %2 == 0) ? '\xB2' : ' ';
                 letra = (r == 1 && peca != ' ') ? peca : letra;
                 if((lin + col) %2 == 0){
@@ -82,309 +199,78 @@ int pintarTelaTexto(){
     }
 }
 
-void atualizarJogo()
-{
+int moverPeca( int linOri, int colOri, int linDes, int colDes) {
+    int mover = 0;
+    char peca;
+    int dV = abs(linDes - linOri);//deslocamento vertical
+    int dH = abs (colDes - colOri);//descolamento horizontal
+    if((linOri >= 0 && linOri <= 8 && colOri >= 0 && colOri <= 8 ) &&
+       (linDes >= 0 && linDes <= 8 && colDes >= 0 && colDes <= 8 )){
+       peca = xadrez[linOri][colOri];
 
-    int brancas, pretas;
+	   //movimento das torres
+	   if((peca == 'T' || peca == 't') &&
+           (dV == 0  || dH == 0)){
+            mover = 1;
+       }
 
-    for(x = 1; x < 10; x++)
-    {
-        for(y = 1; y < 10; y++)
-        {
-            if(matriz[x][y] == 'P')
-            {
-                pretas += 1;
-            }
-            else if(matriz[x][y] == 'B')
-            {
-                brancas += 1;
-            }
+       //movimento dos bispos
+       if((peca == 'B' || peca == 'b') && (dV == dH) )
+           {
+            mover = 1;
+       }
+
+       //movimento dos cavalos
+       if((peca == 'C' || peca == 'c') &&
+           ((dV == 1 && dH == 2) || (dV == 2 && dH == 1) )){
+            mover = 1;
+       }
+
+       //movimento da rainha
+       if((peca == 'Q' || peca == 'q') &&
+           ((dV == dV) || (dH == 0) || (dH == 0))){
+            mover = 1;
+       }
+
+       //movimento do rei
+       if((peca == 'K' || peca == 'k') &&
+           ((dV >= 0 && dV <=1) && (dH >=0 && dH <=1))){
+            mover = 1;
+       }
+
+       //movimento dos peao P
+       if((peca == 'P') && ((linDes - linOri == 1) && (dH == 0)) && (linDes != ' ')){
+            mover = 9;
+        }else if ((peca == 'P') && ((linDes - linOri == 2) && (dH == 0)) && (linOri == 2)){
+            mover = 1;
         }
+        else if((peca == 'P') && ((linDes - linOri == 1) && (dH == 0))){
+                mover = 1;
+        }else{
+            mover = 9;
+        }
+
+       //movimento do peao p
+	   if((peca == 'p') && ((linOri - linDes == 1) && (dH == 0)) && (linDes != ' ')){
+       	mover = 9;
+       }else if((peca == 'p') && ((linOri - linDes == 2) && (dH == 0)) && (linOri == 7)){
+           mover = 1;
+       }else if((peca == 'p') && ((linOri - linDes == 1) && (dH == 0))){
+            mover = 1;
+       }else{
+        mover = 9;
+       }
+
+
+        if(mover){
+        xadrez[linDes][colDes] = xadrez[linOri][colOri];
+        xadrez[linOri][colOri] = ' ';
+        return 1;//movimento realizado
+        }else{
+        return 9;//pe?a n?o pode ser movida deste jeito
+        }
+    }else{
+        return 0;
     }
 
-    if(pretas == 0)
-    {
-        printf("O Player 2 - BRANCAS - VENCEU! PARABENS!");
-        vencer = 1;
-
-    }
-    if(brancas == 0)
-    {
-        printf("O Player 1 - PRETAS - VENCEU! PARABENS!");
-        vencer = 1;
-    }
-}
-
-
-int comerBrancas(){
-  if(matriz[linOri][colOri] == 'P' & (matriz[linOri + 1][colOri + 1] == 'B' & matriz[linOri + 2][colOri + 2] == 'X'))
-    {
-        if(matriz[linDes][colDes] == matriz[linOri + 2][colOri + 2])
-        {
-            matriz[linDes][colDes] = 'P';
-            matriz[linOri][colOri] = 'X';
-            matriz[linOri + 1][colOri + 1] = 'X';
-            player += 1;
-        }
-        else
-        {
-            printf("Voce deve comer a peca na linha %d, coluna %d !", (linOri + 1), (colOri + 1));
-            moverPeca();
-        }
-    }
-    else if(matriz[linOri][colOri] == 'P' & (matriz[linOri + 1][colOri - 1] == 'B' & matriz[linOri + 2][colOri - 2] == 'X'))
-    {
-        if(matriz[linDes][colDes] == matriz[linOri + 2][colOri - 2])
-        {
-            matriz[linDes][colDes] = 'P';
-            matriz[linOri][colOri] = 'X';
-            matriz[linOri + 1][colOri - 1] = 'X';
-            player += 1;
-        }
-        else
-        {
-            printf("Voce deve comer a peca na linha %d, coluna %d !", (linOri + 1), (colOri - 1));
-            moverPeca();
-        }
-    }
-    else if(matriz[linOri][colOri] == 'P' & (matriz[linOri - 1][colOri - 1] == 'B' & matriz[linOri - 2][colOri - 2] == 'X'))
-    {
-        if(matriz[linDes][colDes] == matriz[linOri - 2][colOri - 2])
-        {
-            matriz[linDes][colDes] = 'P';
-            matriz[linOri][colOri] = 'X';
-            matriz[linOri - 1][colOri - 1] = 'X';
-            player += 1;
-        }
-        else
-        {
-            printf("Voce deve comer a peca na linha %d, coluna %d !", (linOri- 1), (colDes - 1));
-            moverPeca();
-        }
-    }
-    else if(matriz[linOri][colOri] == 'P' & (matriz[linOri - 1][colOri + 1] == 'B' & matriz[linOri - 2][colOri + 2] == 'X'))
-    {
-        if(matriz[linDes][colDes] == matriz[linOri - 2][colOri + 2])
-        {
-            matriz[linDes][colDes] = 'P';
-            matriz[linOri][colDes] = ' ';
-            matriz[linOri - 1][colOri + 1] = ' ';
-            player += 1;
-        }
-        else
-        {
-            printf("Voce deve comer a peca na linha %d, coluna %d !", (linOri - 1), (colDes + 1));
-            moverPeca();
-        }
-    }
-}
- void comerPretas()
-{
-    if(matriz[linOri][colOri] == 'B' & (matriz[linOri + 1][colOri + 1] == 'P' & matriz[linOri + 2][colOri + 2] == ' '))
-    {
-        if(matriz[linDes][colDes] == matriz[linOri + 2][colOri + 2])
-        {
-            matriz[linDes][colDes] = 'B';
-            matriz[linOri][colOri] = ' ';
-            matriz[linOri + 1][colOri + 1] = ' ';
-            player -= 1;
-        }
-        else
-        {
-            printf("Voce deve comer a peca na linha %d, coluna %d !", (linOri + 1), (colOri + 1));
-            moverPeca();
-        }
-    }
-    else if(matriz[linOri][colOri] == 'B' & (matriz[linOri + 1][colOri - 1] == 'P' & matriz[linOri + 2][colOri - 2] == ' '))
-    {
-        if(matriz[linDes][colDes] == matriz[linOri + 2][colOri - 2])
-        {
-            matriz[linDes][colDes] = 'B';
-            matriz[linOri][colOri] = ' ';
-            matriz[linOri + 1][colOri - 1] = ' ';
-            player -= 1;
-        }
-        else
-        {
-            printf("Voce deve comer a peca na linha %d, coluna %d !", (linOri + 1), (colOri - 1));
-            moverPeca();
-        }
-    }
-    else if(matriz[linOri][colOri] == 'B' & (matriz[linOri - 1][colOri - 1] == 'P' & matriz[linOri - 2][colOri - 2] == ' '))
-    {
-        if(matriz[linDes][colDes] == matriz[linOri - 2][colOri - 2])
-        {
-            matriz[linDes][colDes] = 'B';
-            matriz[linOri][colOri] = ' ';
-            matriz[linOri - 1][colOri- 1] = ' ';
-            player -= 1;
-        }
-        else
-        {
-            printf("Voce deve comer a peca na linha %d, coluna %d !", (linOri - 1), (colOri- 1));
-            moverPeca();
-        }
-    }
-    else if(matriz[linOri][colOri] == 'B' & (matriz[linOri - 1][colOri + 1] == 'P' & matriz[linOri - 2][colOri + 2] == ' '))
-    {
-        if(matriz[linDes][colDes] == matriz[linOri - 2][colDes + 2])
-        {
-            matriz[linDes][colDes] = 'B';
-            matriz[linOri][colOri] = ' ';
-            matriz[linOri - 1][colOri + 1] = ' ';
-            player -= 1;
-        }
-        else
-        {
-            printf("Voce deve comer a peca na linha %d, coluna %d !", (linOri - 1), (colOri + 1));
-            moverPeca();
-        }
-    }
-}
-
-int verificarRegrasPretas()
-{
-    //Verificando movimentos das Peças PRETAS
-    if (matriz[linOri][colOri] == 'P')
-    {
-        if(matriz[linDes][colDes] == ' ' & (matriz[linDes][colDes] == matriz[linOri + 1][colOri + 1]))
-        {
-            matriz[linDes][colDes] = 'P';
-            matriz[linOri][colOri] = ' ';
-            player += 1;
-        }
-        else if(matriz[linDes][colDes] == ' ' &(matriz[linDes][colDes] == matriz[linOri + 1][colOri - 1]))
-        {
-            matriz[linDes][colDes] = 'P';
-            matriz[linOri][colOri] = ' ';
-            player +=1;
-        }
-        else
-        {
-            printf("Voce tentou mover para um local invalido. Linha: %d | Coluna: %d \nTente novamente!", linDes, colDes);
-            moverPeca();
-        }
-    }
-    else
-    {
-            printf("Voce tentou mover a peca errada!\nLinha: %d | Coluna: %d | Peca: %c \nTente novamente!\n", linOri, colOri, matriz[linOri][colOri]);
-            moverPeca();
-    }
-}
-int verificarRegrasBrancas()
-{
-    if(matriz[linOri][colOri] == 'B')
-    {
-        if(matriz[linDes][colDes] == ' ' & (matriz[linDes][colDes] == matriz[linOri - 1][colOri - 1]))
-        {
-            matriz[linDes][colDes] = 'B';
-            matriz[linOri][colOri] = ' ';
-            player -= 1;
-        }
-        else if(matriz[linDes][colDes] == ' ' & (matriz[linDes][colDes] == matriz[linOri - 1][colOri + 1]))
-        {
-            matriz[linDes][colDes] = 'B';
-            matriz[linOri][colOri] = ' ';
-            player -=1;
-        }
-        else
-        {
-            printf("Voce tentou mover para um local invalido. Linha: %d | Coluna: %d \nTente novamente!", linDes, colDes);
-            moverPeca();
-        }
-    }
-    else
-    {
-        printf("Voce tentou mover a peca errada!\nLinha: %d | Coluna: %d | Peca: %c\nTente novamente!\n", linOri, colOri, matriz[linOri][colOri]);
-        moverPeca();
-    }
-}
-
-
-int moverPeca()
-{
-
-    //Recebendo Origem
-    printf("\nQual Peca deseja mover?\nLinha: ");
-    scanf("%d", &linOri);
-    fflush(stdin);
-    printf("Coluna: ");
-    scanf("%d", &colOri);
-    fflush(stdin);
-
-    //Recebendo Destino
-    printf("\nPara onde deseja mover?\nLinha: ");
-    scanf("%d", &linDes);
-    fflush(stdin);
-    printf("Coluna: ");
-    scanf("%d", &colDes);
-    fflush(stdin);
-
-    if(player == 1)
-    {
-        comerBrancas();
-        verificarRegrasPretas();
-    }
-    else
-    {
-        comerPretas();
-        verificarRegrasBrancas();
-    }
-}
-
-
-int main(){
-    int linOri, linDes, colOri, colDes;
-
-
-        printf("Qual player ira comecar? \n1 -> PRETAS \n2 -> BRANCAS\n ");
-    scanf(" %d", &player);
-
-    if(player < 1 || player > 2)
-    {
-        printf("Por favor, escolha 1 ou 2! Pretas e Brancas respectivamente!");
-    }
-
-    while (vencer == 0)
-    {
-        system("CLS");
-        pintarTelaTexto();
-        if (player == 1)
-        {
-            printf("\nPRETAS\n");
-        }
-        else
-        {
-            printf("\nBRANCAS\n");
-        }
-        moverPeca();
-        atualizarJogo();
-    }
-    /*while(1)  {
-
-      pintarTelaTexto();
-      moverPeca();
-      printf("Informe a linha e coluna de origem: ");
-      scanf("%d %d",&linOri, &colOri );
-      printf("\nInforme a linha e coluna de destino: ");
-      scanf("%d %d",&linDes, &colDes );
-      int resultado = moverPeca(linOri, colOri, linDes, colDes);
-      if( resultado != 1){
-        switch( resultado ) {
-            case 9:
-                printf("\n ERRO: Pe�a n�o pode ser movida deste jeito!");
-                getch();
-                break;
-            case 0:
-                printf("\nERRO : Coordenadas inv�lidas!");
-                getch();
-                break;
-            case 1:
-                break;
-        }
-      }
-    }*/
-
-    getch();
-    return 0;
 }
